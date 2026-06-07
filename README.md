@@ -8,7 +8,9 @@ Archivos principales:
 - `docker-compose.yml` — ejecuta Hermes en un contenedor reproducible.
 - `docker-entrypoint.sh` — inyecta las variables de entorno y arranca Hermes.
 - `hermes.env.example` — plantilla para tus credenciales.
-- `HERMES_TELEGRAM_INSTALL_PLAN.md` — plan de instalación, diagnóstico y despliegue.
+- `api_budget.json` — archivo de presupuesto de tokens compartido.
+- `api_key_limits.example.json` — ejemplo de límites para las API keys.
+- `docs/` — documentación, planos y gobernanza de arquitectura.
 
 ## Uso rápido
 
@@ -48,6 +50,7 @@ docker run --rm --entrypoint /bin/bash hermes-test -lc 'hermes --version'
 - `.dockerignore` ya excluye `hermes.env` y otros archivos de entorno.
 - El contenedor necesita un token válido de Telegram antes de poder conectar la plataforma.
 - El entrypoint ahora acepta comandos personalizados o, por defecto, arranca `hermes gateway run`.
+- Usa las skills ligeras en `skills/` para mantener memoria, estado y el plan sincronizados.
 
 ## Validación
 
@@ -57,3 +60,10 @@ El Dockerfile se construyó correctamente y el contenedor puede ejecutar Hermes.
 
 - `.gitignore` — para ignorar archivos de entorno local.
 - `hermes-install.sh` — script de instalación reproducible para entornos Ubuntu.
+- `skills/README.md` — guía de skills ligeras para memoria, estado, plan y Docker.
+- `api_key_limits.example.json` — ejemplo de configuración de límites de API keys.
+- `skills/scripts/skill_commit_push.py` — skill de validación, commit y push basado en estado.
+- `docs/N8N.md` — documentación de n8n para este repositorio.
+- `state.json` — ahora registra el entorno actual y mantiene múltiples entornos.
+- `docs/copilot-instructions.md` — instrucciones de Copilot para usar estas skills de forma determinista.
+- `skills/docs/COPILOT_SKILL.md` — documentación de la skill y el comportamiento predecible.

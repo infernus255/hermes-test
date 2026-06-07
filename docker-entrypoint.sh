@@ -17,8 +17,20 @@ if [ -n "${GEMINI_API_KEY}" ]; then
   echo "GEMINI_API_KEY=${GEMINI_API_KEY}" >> /root/.hermes/.env
 fi
 
+if [ -n "${GEMINI_API_KEYS}" ]; then
+  echo "GEMINI_API_KEYS=${GEMINI_API_KEYS}" >> /root/.hermes/.env
+fi
+
 if [ -n "${GOOGLE_API_KEY}" ]; then
   echo "GOOGLE_API_KEY=${GOOGLE_API_KEY}" >> /root/.hermes/.env
+fi
+
+if [ -n "${GOOGLE_API_KEYS}" ]; then
+  echo "GOOGLE_API_KEYS=${GOOGLE_API_KEYS}" >> /root/.hermes/.env
+fi
+
+if [ -n "${API_KEY_LIMITS}" ]; then
+  echo "API_KEY_LIMITS=${API_KEY_LIMITS}" >> /root/.hermes/.env
 fi
 
 if [ -n "${TELEGRAM_ALLOWED_USERS}" ]; then

@@ -1,0 +1,123 @@
+{
+  "timestamp": "2026-06-07T07:11:01.795175Z",
+  "current_environment_id": "codespaces-16ec44:host:hermes-test",
+  "environment": {
+    "environment_id": "codespaces-16ec44:host:hermes-test",
+    "environment_name": "codespaces-16ec44",
+    "user": "codespace",
+    "env_type": "host",
+    "container_id": null,
+    "path": "/workspaces/hermes-test",
+    "timestamp": "2026-06-07T07:11:00.863099Z"
+  },
+  "environments": {
+    "codespaces-16ec44:host:hermes-test": {
+      "environment": {
+        "environment_id": "codespaces-16ec44:host:hermes-test",
+        "environment_name": "codespaces-16ec44",
+        "user": "codespace",
+        "env_type": "host",
+        "container_id": null,
+        "path": "/workspaces/hermes-test",
+        "timestamp": "2026-06-07T07:11:00.863099Z"
+      },
+      "hermes": {
+        "installed": true,
+        "version": "Hermes Agent v0.16.0 (2026.6.5) · upstream 210f4e70",
+        "provider": "gemini",
+        "model_default": "gemini-3.5-flash",
+        "base_url": "https://generativelanguage.googleapis.com/v1beta/openai",
+        "gateway": "telegram_not_configured"
+      },
+      "system": {
+        "os_name": "Ubuntu 24.04.4 LTS",
+        "os_version": "24.04.4 LTS (Noble Numbat)",
+        "packages_checked": [
+          {
+            "package": "curl",
+            "status": "installed"
+          },
+          {
+            "package": "git",
+            "status": "installed"
+          },
+          {
+            "package": "python3",
+            "status": "installed"
+          },
+          {
+            "package": "python3-venv",
+            "status": "missing"
+          },
+          {
+            "package": "python3-pip",
+            "status": "installed"
+          },
+          {
+            "package": "npm",
+            "status": "missing"
+          },
+          {
+            "package": "xz-utils",
+            "status": "installed"
+          },
+          {
+            "package": "ca-certificates",
+            "status": "installed"
+          }
+        ],
+        "required_packages": [
+          "curl",
+          "git",
+          "python3",
+          "python3-venv",
+          "python3-pip",
+          "npm",
+          "xz-utils",
+          "ca-certificates"
+        ]
+      },
+      "git": {
+        "branch": "main",
+        "commit": "30a693780243a354cd9f06d74016ad99bfcc7413",
+        "message": "Add reproducible Docker deployment, install script, and Hermes Telegram installation plan documentation",
+        "status": {
+          "modified": 4,
+          "untracked": 6,
+          "ahead": 0,
+          "behind": 0
+        }
+      },
+      "api_keys": {
+        "summary": {
+          "total_keys": 2,
+          "providers": [
+            "GEMINI",
+            "GOOGLE"
+          ]
+        },
+        "keys": [
+          {
+            "provider": "GEMINI",
+            "alias": "primary",
+            "key_id": "bbecfb04dcd925eb",
+            "limit": null,
+            "limit_source": null,
+            "source": "GEMINI_API_KEY",
+            "note": "Clave API principal"
+          },
+          {
+            "provider": "GOOGLE",
+            "alias": "primary",
+            "key_id": "bbecfb04dcd925eb",
+            "limit": null,
+            "limit_source": null,
+            "source": "GOOGLE_API_KEY",
+            "note": "Clave API principal"
+          }
+        ],
+        "limits_source": "api_key_limits.json or API_KEY_LIMITS env"
+      }
+    }
+  }
+}

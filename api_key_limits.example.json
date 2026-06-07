@@ -1,0 +1,14 @@
+{
+  "keys": {
+    "primary": {
+      "limit": 1000000,
+      "provider": "gemini",
+      "notes": "Primary Gemini key with higher monthly quota"
+    },
+    "backup": {
+      "limit": 500000,
+      "provider": "gemini",
+      "notes": "Backup Gemini key for overflow usage"
+    }
+  }
+}

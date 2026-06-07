@@ -1,0 +1,13 @@
+{
+  "vault": {
+    "gemini_35_flash_primary": { "key_env_var": "GEMINI_API_KEY_1", "provider": "google", "tier": "free", "daily_token_limit": 500000, "used_today": 0, "status": "active" },
+    "gemini_35_flash_backup": { "key_env_var": "GEMINI_API_KEY_2", "provider": "google", "tier": "free", "daily_token_limit": 500000, "used_today": 0, "status": "idle" },
+    "openai_fallback": { "key_env_var": "OPENAI_API_KEY", "provider": "openai", "tier": "pay_as_you_go", "daily_token_limit": 100000, "used_today": 0, "status": "idle" }
+  },
+  "current_strategy": "cost_saving",
+  "copilot_quota_alerts": {
+    "max_percentage_per_session": 5,
+    "current_session_burn": 0,
+    "last_checkpoint_percentage": 4
+  }
+}

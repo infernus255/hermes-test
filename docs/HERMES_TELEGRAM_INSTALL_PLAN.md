@@ -258,6 +258,77 @@ hermes setup
 
 ## 10. Escalabilidad y replicabilidad
 
+<!-- STATE-BEGIN -->
+## 14. Estado actual y validación
+
+### Entorno actual
+- Environment ID: codespaces-16ec44:host:hermes-test
+- Environment type: host
+
+### Hermes
+- Instalado: True
+- Versión: Hermes Agent v0.16.0 (2026.6.5) · upstream 210f4e70
+- Proveedor: gemini
+- Modelo por defecto: gemini-3.5-flash
+- Base URL: https://generativelanguage.googleapis.com/v1beta/openai
+- Gateway Telegram: telegram_not_configured
+
+### Sistema operativo
+- Nombre: Ubuntu 24.04.4 LTS
+- Versión: 24.04.4 LTS (Noble Numbat)
+- Paquetes verificados:
+  - curl: installed
+  - git: installed
+  - python3: installed
+  - python3-venv: missing
+  - python3-pip: installed
+  - npm: missing
+  - xz-utils: installed
+  - ca-certificates: installed
+
+### API keys
+- Total de claves detectadas: 2
+- Proveedores: GEMINI, GOOGLE
+  - primary (GEMINI): limit=unknown, source=GEMINI_API_KEY
+  - primary (GOOGLE): limit=unknown, source=GOOGLE_API_KEY
+
+### Repositorio git
+- Rama: main
+- Commit: 30a693780243a354cd9f06d74016ad99bfcc7413
+- Mensaje: Add reproducible Docker deployment, install script, and Hermes Telegram installation plan documentation
+- Cambios modificados: 4
+- Archivos no rastreados: 6
+- Ahead: 0
+- Behind: 0
+<!-- STATE-END -->
+
+<!-- AUTORUNNER-BEGIN -->
+## 15. Autorunner para IA de bajo tier
+
+Sigue estos pasos exactos en el orden dado. No hagas suposiciones adicionales.
+
+1. Actualiza el estado del proyecto:
+   - `python3 skills/scripts/skill_state.py`
+
+2. Actualiza el plan con el estado actual:
+   - `python3 skills/scripts/skill_plan.py`
+
+3. Si hay un nuevo aprendizaje, agrégalo a la memoria:
+   - `bash skills/scripts/skill_memory.sh "Texto del aprendizaje"`
+
+4. Sincroniza Docker con el estado del sistema operativo:
+   - `python3 skills/scripts/skill_docker.py`
+
+5. Reconstruye el contenedor para aplicar los cambios:
+   - `docker compose build --progress=plain`
+
+6. Verifica el contenedor y el gateway:
+   - `docker compose up -d`
+   - `docker compose logs -f`
+
+Este autorunner está diseñado para ser seguido literalmente por una IA de bajo tier.
+<!-- AUTORUNNER-END -->
+
 ### 10.1 Uso de scripts de instalación reproducibles
 
 Crea un script `hermes-install.sh` que incluya:
