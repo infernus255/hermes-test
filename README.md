@@ -50,7 +50,7 @@ docker run --rm --entrypoint /bin/bash hermes-test -lc 'hermes --version'
 - `.dockerignore` ya excluye `hermes.env` y otros archivos de entorno.
 - El contenedor necesita un token válido de Telegram antes de poder conectar la plataforma.
 - El entrypoint ahora acepta comandos personalizados o, por defecto, arranca `hermes gateway run`.
-- Usa las skills ligeras en `skills/` para mantener memoria, estado y el plan sincronizados.
+- Usa las skills ligeras en `harness/` para mantener memoria, estado y el plan sincronizados.
 
 ## Validación
 
@@ -60,10 +60,13 @@ El Dockerfile se construyó correctamente y el contenedor puede ejecutar Hermes.
 
 - `.gitignore` — para ignorar archivos de entorno local.
 - `hermes-install.sh` — script de instalación reproducible para entornos Ubuntu.
-- `skills/README.md` — guía de skills ligeras para memoria, estado, plan y Docker.
+- `harness/README.md` — guía de skills ligeras para memoria, estado, plan y Docker.
+- `review_for_ai.md` — paquete de revisión listo para enviar a otra IA.
+- `copilot_architecture_directive.md` — directivas claras para refactorizar el harness.
+- `copilot_autorunner.md` — autorunner maestro para ejecutar la refactorización y validación.
 - `api_key_limits.example.json` — ejemplo de configuración de límites de API keys.
-- `skills/scripts/skill_commit_push.py` — skill de validación, commit y push basado en estado.
+- `harness/scripts/skill_commit_push.py` — skill de validación, commit y push basado en estado.
 - `docs/N8N.md` — documentación de n8n para este repositorio.
 - `state.json` — ahora registra el entorno actual y mantiene múltiples entornos.
 - `docs/copilot-instructions.md` — instrucciones de Copilot para usar estas skills de forma determinista.
-- `skills/docs/COPILOT_SKILL.md` — documentación de la skill y el comportamiento predecible.
+- `harness/docs/COPILOT_SKILL.md` — documentación de la skill y el comportamiento predecible.

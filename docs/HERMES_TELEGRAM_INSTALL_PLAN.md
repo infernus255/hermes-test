@@ -308,16 +308,16 @@ hermes setup
 Sigue estos pasos exactos en el orden dado. No hagas suposiciones adicionales.
 
 1. Actualiza el estado del proyecto:
-   - `python3 skills/scripts/skill_state.py`
+   - `python3 harness/scripts/skill_state.py`
 
 2. Actualiza el plan con el estado actual:
-   - `python3 skills/scripts/skill_plan.py`
+   - `python3 harness/scripts/skill_plan.py`
 
 3. Si hay un nuevo aprendizaje, agrégalo a la memoria:
-   - `bash skills/scripts/skill_memory.sh "Texto del aprendizaje"`
+   - `bash harness/scripts/skill_memory.sh "Texto del aprendizaje"`
 
 4. Sincroniza Docker con el estado del sistema operativo:
-   - `python3 skills/scripts/skill_docker.py`
+   - `python3 harness/scripts/skill_docker.py`
 
 5. Reconstruye el contenedor para aplicar los cambios:
    - `docker compose build --progress=plain`

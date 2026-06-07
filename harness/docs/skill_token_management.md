@@ -27,7 +27,7 @@ Este archivo debe ser la única fuente de verdad para el consumo de tokens y la 
 | Complejidad de la Tarea | Tipo de Ejecución | Modelo / Flujo Asignado | Estrategia de Ahorro de Tokens |
 |---|---|---|---|
 | Baja | Respuestas breves en Telegram, logs simples, confirmación de commits. | Raptor Mini (Si estás en VS Code) o respuestas directas sin historial. | Forzar respuestas de menos de 100 tokens. Limpiar el historial previo. |
-| Media | Refactorización de código aislado, añadir habilidades (`skills/*.md`), documentación. | Gemini 3.5 Flash (Key activa con menor porcentaje de uso). | Inyección de contexto fraccionada (solo las líneas mutadas, no el archivo entero). |
+| Media | Refactorización de código aislado, añadir habilidades (`harness/*.md`), documentación. | Gemini 3.5 Flash (Key activa con menor porcentaje de uso). | Inyección de contexto fraccionada (solo las líneas mutadas, no el archivo entero). |
 | Alta | Modificaciones de la arquitectura del Harness, refactorización de Docker, fallas críticas. | Gemini 3.5 Flash (Extended Context si es necesario) / Copilot Autopilot. | Consolidar un resumen previo (summary) antes de pasar todo el árbol del repositorio. |
 
 ## 4. Algoritmo de Control de "Supervivencia"

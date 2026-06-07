@@ -3,15 +3,11 @@ import json
 from pathlib import Path
 import re
 
+from utils.state_loader import StateLoader
+
+loader = StateLoader()
 REPO_ROOT = Path(__file__).resolve().parents[1]
-STATE_FILE = REPO_ROOT / "state.json"
 DOCKERFILE = REPO_ROOT / "Dockerfile"
-
-
-def load_state():
-    if not STATE_FILE.exists():
-        raise SystemExit(f"No existe {STATE_FILE}. Ejecute skills/scripts/skill_state.py primero.")
-    return json.loads(STATE_FILE.read_text())
 
 
 def parse_dockerfile_packages(content):
@@ -42,15 +38,22 @@ def update_dockerfile(content, required_packages):
     return updated_content, missing
 
 
+def load_state():
+    state = loader.load_state(force_reload=True)
+    if not state:
+        raise SystemExit(f"No existe {loader.state_file}. Ejecute harness/scripts/skill_state.py primero.")
+    return state
+
+
 def main():
     state = load_state()
     required = state.get("system", {}).get("required_packages", [])
-    dockerfile_text = DOCKERFILE.read_text()
+    dockerfile_text = DOCKERFILE.read_text(encoding="utf-8")
     updated_text, missing = update_dockerfile(dockerfile_text, required)
     if not missing:
         print(f"Dockerfile ya contiene los paquetes requeridos: {required}")
         return
-    DOCKERFILE.write_text(updated_text)
+    DOCKERFILE.write_text(updated_text, encoding="utf-8")
     print(f"Dockerfile actualizado con paquetes adicionales: {missing}")
 
 

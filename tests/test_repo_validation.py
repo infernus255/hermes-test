@@ -5,17 +5,17 @@ import re
 import unittest
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parents[1]
-SKILLS_DIR = REPO_ROOT / "skills" / "scripts"
+HARNESS_DIR = REPO_ROOT / "harness" / "scripts"
 DOCS_DIR = REPO_ROOT / "docs"
 
 
 class TestRepositoryValidation(unittest.TestCase):
     def test_skill_scripts_compile(self):
         files = [
-            SKILLS_DIR / "skill_state.py",
-            SKILLS_DIR / "skill_plan.py",
-            SKILLS_DIR / "skill_docker.py",
-            SKILLS_DIR / "skill_commit_push.py",
+            HARNESS_DIR / "skill_state.py",
+            HARNESS_DIR / "skill_plan.py",
+            HARNESS_DIR / "skill_docker.py",
+            HARNESS_DIR / "skill_commit_push.py",
         ]
         for source in files:
             with self.subTest(source=source):
@@ -23,23 +23,23 @@ class TestRepositoryValidation(unittest.TestCase):
 
     def test_docs_use_new_skill_script_paths(self):
         paths = [
-            "python3 skills/scripts/skill_state.py",
-            "python3 skills/scripts/skill_plan.py",
-            "bash skills/scripts/skill_memory.sh",
-            "python3 skills/scripts/skill_docker.py",
-            "python3 skills/scripts/skill_commit_push.py",
+            "python3 harness/scripts/skill_state.py",
+            "python3 harness/scripts/skill_plan.py",
+            "bash harness/scripts/skill_memory.sh",
+            "python3 harness/scripts/skill_docker.py",
+            "python3 harness/scripts/skill_commit_push.py",
         ]
         old_paths = [
-            "skills/skill_state.py",
-            "skills/skill_plan.py",
-            "skills/skill_memory.sh",
-            "skills/skill_docker.py",
-            "skills/skill_commit_push.py",
+            "harness/skill_state.py",
+            "harness/skill_plan.py",
+            "harness/skill_memory.sh",
+            "harness/skill_docker.py",
+            "harness/skill_commit_push.py",
         ]
         files = [
             DOCS_DIR / "copilot-instructions.md",
-            SKILLS_DIR.parent / "README.md",
-            SKILLS_DIR.parent / "docs" / "COPILOT_SKILL.md",
+            HARNESS_DIR.parent / "README.md",
+            HARNESS_DIR.parent / "docs" / "COPILOT_SKILL.md",
         ]
         for file_path in files:
             text = file_path.read_text(encoding="utf-8")
@@ -65,8 +65,8 @@ class TestRepositoryValidation(unittest.TestCase):
             DOCS_DIR / "copilot-instructions.md",
             DOCS_DIR / "HERMES_TELEGRAM_INSTALL_PLAN.md",
             DOCS_DIR / "N8N.md",
-            SKILLS_DIR.parent / "README.md",
-            SKILLS_DIR.parent / "docs" / "COPILOT_SKILL.md",
+            HARNESS_DIR.parent / "README.md",
+            HARNESS_DIR.parent / "docs" / "COPILOT_SKILL.md",
         ]
         for file_path in required:
             with self.subTest(file=file_path):

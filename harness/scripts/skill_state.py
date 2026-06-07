@@ -8,10 +8,11 @@ import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
-STATE_FILE = REPO_ROOT / "state.json"
+from utils.state_loader import StateLoader
+
+loader = StateLoader()
 DOCKER_IMAGE = "hermes-test"
-KEY_LIMITS_FILE = REPO_ROOT / "api_key_limits.json"
+KEY_LIMITS_FILE = loader.repo_root / "api_key_limits.json"
 API_KEY_LIMITS_ENV = "API_KEY_LIMITS"
 
 
@@ -107,7 +108,7 @@ def format_key_limit(alias, key_id, limits):
 def extract_api_keys_data():
     env_values = {}
     env_values.update(os.environ)
-    repo_env = REPO_ROOT / "hermes.env"
+    repo_env = loader.repo_root / "hermes.env"
     if repo_env.exists():
         env_values.update(load_env_file(repo_env))
     home_env = Path.home() / ".hermes" / ".env"
@@ -229,32 +230,17 @@ def get_hermes_status():
 
 
 def get_system_state():
-    system = {
-        "os_name": None,
-        "os_version": None,
-        "packages_checked": [],
-        "required_packages": [
-            "curl",
-            "git",
-            "python3",
-            "python3-venv",
-            "python3-pip",
-            "npm",
-            "xz-utils",
-            "ca-certificates"
-        ]
-    }
-    if Path("/etc/os-release").exists():
-        data = Path("/etc/os-release").read_text().splitlines()
-        for line in data:
-            if line.startswith("NAME="):
-                system["os_name"] = line.split("=", 1)[1].strip().strip('"')
-            if line.startswith("VERSION="):
-                system["os_version"] = line.split("=", 1)[1].strip().strip('"')
-    if shutil.which("lsb_release"):
-        distro = run_command(["lsb_release", "-ds"])
-        if distro:
-            system["os_name"] = distro.strip('"')
+    system = loader.discover_base_system()
+    system["required_packages"] = [
+        "curl",
+        "git",
+        "python3",
+        "python3-venv",
+        "python3-pip",
+        "npm",
+        "xz-utils",
+        "ca-certificates"
+    ]
     if shutil.which("dpkg-query"):
         for package in system["required_packages"]:
             installed = run_command(["dpkg-query", "-W", "-f=${Status}", package])
@@ -330,17 +316,8 @@ def get_environment_metadata():
     return metadata
 
 
-def load_existing_state():
-    if STATE_FILE.exists():
-        try:
-            return json.loads(STATE_FILE.read_text())
-        except json.JSONDecodeError:
-            return {}
-    return {}
-
-
 def main():
-    existing_state = load_existing_state()
+    existing_state = loader.load_state(force_reload=True)
     environment = get_environment_metadata()
     env_id = environment["environment_id"]
     env_entry = {
@@ -358,8 +335,8 @@ def main():
         "environments": existing_state.get("environments", {})
     }
     state["environments"][env_id] = env_entry
-    STATE_FILE.write_text(json.dumps(state, indent=2, ensure_ascii=False) + "\n")
-    print(f"Estado guardado en {STATE_FILE}")
+    loader.save_state(state)
+    print(f"Estado guardado en {loader.state_file}")
 
 
 if __name__ == "__main__":

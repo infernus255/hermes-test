@@ -32,10 +32,10 @@ Cuando este repositorio se clone en diferentes entornos físicos (Computadora pe
 
 ## 4. Instrucciones de Uso
 
-1. Crea una carpeta llamada `skills/` y guarda allí los dos primeros archivos (`skill_token_management.md` y `skill_harness_improvement.md`).
+1. Crea una carpeta llamada `harness/` y guarda allí los dos primeros archivos (`skill_token_management.md` y `skill_harness_improvement.md`).
 2. Guarda el tercer archivo (`architecture_insights.md`) en la raíz del repositorio.
 3. Abre el chat de Copilot en modo Autopilot Preview (con Raptor Mini seleccionado) o invoca a Hermes y diles:
 
-"Lean los archivos en `skills/` y el archivo `architecture_insights.md`. En base a esas directivas, programen el script de automatización en Python o Node para inicializar la base de `config/api_budget.json` y configuren el interceptor de tokens para las API keys de Gemini 3.5 Flash".
+"Lean los archivos en `harness/` y el archivo `architecture_insights.md`. En base a esas directivas, programen el script de automatización en Python o Node para inicializar la base de `config/api_budget.json` y configuren el interceptor de tokens para las API keys de Gemini 3.5 Flash".
 
 A partir de ahí, ambos modelos entenderán perfectamente las reglas de juego, los límites de costos y cómo optimizarse mutuamente sin pisarse los cables.

@@ -7,16 +7,18 @@ import subprocess
 import sys
 from pathlib import Path
 
+from utils.state_loader import StateLoader
+
+loader = StateLoader()
 REPO_ROOT = Path(__file__).resolve().parents[1]
-STATE_FILE = REPO_ROOT / "state.json"
 VALIDATION_FILES = [
     "state.json",
     "memory.md",
     "README.md",
     "docs/HERMES_TELEGRAM_INSTALL_PLAN.md",
     "docs/copilot-instructions.md",
-    "skills/README.md",
-    "skills/docs/COPILOT_SKILL.md",
+    "harness/README.md",
+    "harness/docs/COPILOT_SKILL.md",
     "docs/N8N.md",
     "Dockerfile",
     "docker-compose.yml",
@@ -39,10 +41,10 @@ def validate_file(path):
 
 
 def load_state():
-    if not STATE_FILE.exists():
-        return None, "No se encontró state.json. Ejecuta skills/scripts/skill_state.py primero."
-    with STATE_FILE.open("r", encoding="utf-8") as f:
-        return json.load(f), None
+    state = loader.load_state(force_reload=True)
+    if not state:
+        return None, "No se encontró state.json. Ejecuta harness/scripts/skill_state.py primero."
+    return state, None
 
 
 def current_state_entry(state):
@@ -84,7 +86,7 @@ def validate_hermes(state):
 def validate_copilot_docs():
     docs = [
         ("docs/copilot-instructions.md", ["Use only the provided scripts", "skill_state.py", "skill_plan.py", "skill_docker.py"]),
-        ("skills/docs/COPILOT_SKILL.md", ["deterministic", "state.json", "skill_memory.sh", "skill_state.py", "skill_docker.py"]),
+        ("harness/docs/COPILOT_SKILL.md", ["deterministic", "state.json", "skill_memory.sh", "skill_state.py", "skill_docker.py"]),
     ]
     for path, phrases in docs:
         file_path = REPO_ROOT / path
@@ -113,7 +115,7 @@ def validate_api_keys(state):
     current = current_state_entry(state)
     api_keys = current.get("api_keys", {}).get("keys", [])
     if not api_keys:
-        return False, "No se detectaron claves API en state.json. Ejecuta skills/scripts/skill_state.py con las claves definidas."
+        return False, "No se detectaron claves API en state.json. Ejecuta harness/scripts/skill_state.py con las claves definidas."
     missing = [key for key in api_keys if key.get("limit") is None]
     if missing:
         aliases = [key.get("alias") or key.get("key_id", "unknown") for key in missing]
@@ -143,61 +145,65 @@ def git_add_commit_push(message):
 
 
 def main():
-    state, err = load_state()
-    if err:
-        print(err)
-        sys.exit(1)
+    loader.acquire_lock()
+    try:
+        state, err = load_state()
+        if err:
+            print(err)
+            sys.exit(1)
 
-    print("Validando archivos de documentación...")
-    errors = []
-    for path in VALIDATION_FILES:
-        ok, msg = validate_file(path)
+        print("Validando archivos de documentación...")
+        errors = []
+        for path in VALIDATION_FILES:
+            ok, msg = validate_file(path)
+            if not ok:
+                errors.append(msg)
+
+        print("Validando estado del sistema operativo...")
+        ok, msg = validate_os(state)
         if not ok:
             errors.append(msg)
 
-    print("Validando estado del sistema operativo...")
-    ok, msg = validate_os(state)
-    if not ok:
-        errors.append(msg)
+        print("Validando Hermes...")
+        ok, msg = validate_hermes(state)
+        if not ok:
+            errors.append(msg)
 
-    print("Validando Hermes...")
-    ok, msg = validate_hermes(state)
-    if not ok:
-        errors.append(msg)
+        print("Validando documentación de Copilot...")
+        ok, msg = validate_copilot_docs()
+        if not ok:
+            errors.append(msg)
 
-    print("Validando documentación de Copilot...")
-    ok, msg = validate_copilot_docs()
-    if not ok:
-        errors.append(msg)
+        print("Validando claves API y límites...")
+        ok, msg = validate_api_keys(state)
+        if not ok:
+            errors.append(msg)
 
-    print("Validando claves API y límites...")
-    ok, msg = validate_api_keys(state)
-    if not ok:
-        errors.append(msg)
+        print("Validando n8n...")
+        ok, msg = validate_n8n()
+        if not ok:
+            errors.append(msg)
 
-    print("Validando n8n...")
-    ok, msg = validate_n8n()
-    if not ok:
-        errors.append(msg)
+        print("Validando Docker...")
+        ok, msg = validate_docker()
+        if not ok:
+            errors.append(msg)
 
-    print("Validando Docker...")
-    ok, msg = validate_docker()
-    if not ok:
-        errors.append(msg)
+        if errors:
+            print("\nValidación fallida con los siguientes errores:")
+            for item in errors:
+                print(f"- {item}")
+            sys.exit(1)
 
-    if errors:
-        print("\nValidación fallida con los siguientes errores:")
-        for item in errors:
-            print(f"- {item}")
-        sys.exit(1)
+        commit_message = "Auto commit: validate state/docs/hermes/copilot/n8n/docker and push"
+        if len(sys.argv) > 1:
+            commit_message = " ".join(sys.argv[1:])
 
-    commit_message = "Auto commit: validate state/docs/hermes/copilot/n8n/docker and push"
-    if len(sys.argv) > 1:
-        commit_message = " ".join(sys.argv[1:])
-
-    print("Todas las validaciones pasaron. Commit y push en progreso...")
-    git_add_commit_push(commit_message)
-    print("Commit y push completados.")
+        print("Todas las validaciones pasaron. Commit y push en progreso...")
+        git_add_commit_push(commit_message)
+        print("Commit y push completados.")
+    finally:
+        loader.release_lock()
 
 
 if __name__ == "__main__":

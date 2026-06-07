@@ -3,8 +3,10 @@ import json
 from pathlib import Path
 from datetime import datetime
 
+from utils.state_loader import StateLoader
+
+loader = StateLoader()
 REPO_ROOT = Path(__file__).resolve().parents[1]
-STATE_FILE = REPO_ROOT / "state.json"
 PLAN_FILE = REPO_ROOT / "docs" / "HERMES_TELEGRAM_INSTALL_PLAN.md"
 
 STATE_BEGIN = "<!-- STATE-BEGIN -->"
@@ -14,9 +16,10 @@ AUTORUNNER_END = "<!-- AUTORUNNER-END -->"
 
 
 def load_state():
-    if not STATE_FILE.exists():
-        raise SystemExit(f"No existe {STATE_FILE}. Ejecute skills/scripts/skill_state.py primero.")
-    return json.loads(STATE_FILE.read_text())
+    state = loader.load_state(force_reload=True)
+    if not state:
+        raise SystemExit(f"No existe {loader.state_file}. Ejecute harness/scripts/skill_state.py primero.")
+    return state
 
 
 def current_environment(state):
@@ -85,16 +88,16 @@ def format_autorunner(state):
         "Sigue estos pasos exactos en el orden dado. No hagas suposiciones adicionales.",
         "",
         "1. Actualiza el estado del proyecto:",
-        "   - `python3 skills/scripts/skill_state.py`",
+        "   - `python3 harness/scripts/skill_state.py`",
         "",
         "2. Actualiza el plan con el estado actual:",
-        "   - `python3 skills/scripts/skill_plan.py`",
+        "   - `python3 harness/scripts/skill_plan.py`",
         "",
         "3. Si hay un nuevo aprendizaje, agrégalo a la memoria:",
-        "   - `bash skills/scripts/skill_memory.sh \"Texto del aprendizaje\"`",
+        "   - `bash harness/scripts/skill_memory.sh \"Texto del aprendizaje\"`",
         "",
         "4. Sincroniza Docker con el estado del sistema operativo:",
-        "   - `python3 skills/scripts/skill_docker.py`",
+        "   - `python3 harness/scripts/skill_docker.py`",
         "",
         "5. Reconstruye el contenedor para aplicar los cambios:",
         "   - `docker compose build --progress=plain`",
