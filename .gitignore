@@ -1,0 +1,7 @@
+# Ignorar archivos de entorno locales y secretos
+*.env
+hermes.env
+
+# Ignorar caches temporales
+__pycache__/
+*.pyc
